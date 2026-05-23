@@ -1,0 +1,19 @@
+Green Leaf Cafe
+
+Business profile:
+- We are a small cafe that serves breakfast, lunch, coffee, and fresh juices.
+- Our address is 24 Lake Road, Port of Spain.
+- Our WhatsApp order number is +1 555 123 4567.
+
+Opening hours:
+- Monday to Friday: 8:00 AM to 8:00 PM.
+- Saturday and Sunday: 9:00 AM to 6:00 PM.
+
+Delivery:
+- Free delivery within 5 km for orders above $25.
+- Delivery outside 5 km costs $5.
+
+Policies:
+- We accept cash, card, and mobile payments.
+- Refunds are available within 24 hours if items are wrong or damaged.
+- Free Wi-Fi is available for dine-in customers.

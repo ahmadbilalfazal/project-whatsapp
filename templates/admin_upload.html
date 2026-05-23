@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block title %}Upload Document{% endblock %}
+{% block content %}
+  <h2>Upload Document</h2>
+  <p>Supported formats: PDF, DOCX, TXT. Uploaded content will be chunked and indexed for WhatsApp responses.</p>
+  <form method="post" enctype="multipart/form-data">
+    {{ form.hidden_tag() }}
+    <p>{{ form.file.label }}<br>{{ form.file() }}</p>
+    <p>{{ form.submit() }}</p>
+  </form>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block title %}Login{% endblock %}
+{% block content %}
+  <h2>Sign in to the business dashboard</h2>
+  <div class="auth-container">
+  <div style="text-align:center; margin-bottom:0.5rem;"><img src="{{ url_for('static', filename='images/logo-small.svg') }}" alt="logo" style="height:46px;"></div>
+  <form method="post">
+    {{ form.hidden_tag() }}
+    <div class="form-row">
+      {{ form.username.label }}<br>
+      {{ form.username(class_='') }}
+    </div>
+    <div class="form-row">
+      {{ form.password.label }}<br>
+      {{ form.password() }}
+    </div>
+    <div class="form-row">{{ form.remember_me() }} {{ form.remember_me.label }}</div>
+    <div class="form-row">{{ form.submit(class_='btn-primary') }}</div>
+  </form>
+  </div>
+{% endblock %}

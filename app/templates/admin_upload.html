@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block title %}Upload Document{% endblock %}
+{% block content %}
+  <h2>Upload Document</h2>
+  <p>Supported formats: PDF, DOCX, TXT. Uploaded content will be chunked and indexed for WhatsApp responses.</p>
+  <form id="upload-form" method="post" enctype="multipart/form-data">
+    {{ form.hidden_tag() }}
+    <div id="dropzone" class="dropzone">
+      <div class="dz-info" id="dz-info">
+        <svg class="icon" viewBox="0 0 24 24" width="20" height="20" xmlns="http://www.w3.org/2000/svg" fill="#075E54"><path d="M12 2L12 14" stroke="#075E54" stroke-width="0"/></svg>
+        <div>
+          <div class="dz-text">Drag & drop a document here</div>
+          <small>or click to browse — PDF, DOCX, TXT — max 10 MB</small>
+        </div>
+      </div>
+      <div>
+        <button type="button" class="btn" onclick="document.getElementById('file-input').click();">Choose file</button>
+      </div>
+    </div>
+    <div id="dz-error" class="dz-error" style="display:none; margin-top:0.5rem;"></div>
+    <input id="file-input" style="display:none;" type="file" name="file">
+    <div class="form-row" style="margin-top:1rem; text-align:right;">
+      {{ form.submit(class_='btn-primary') }}
+    </div>
+  </form>
+{% endblock %}

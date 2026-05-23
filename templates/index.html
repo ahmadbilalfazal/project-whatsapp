@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block title %}Home{% endblock %}
+{% block content %}
+  <h2>Business Dashboard</h2>
+  <p>This system answers customer questions from uploaded business documents and returns grounded WhatsApp replies with citations.</p>
+
+  <h3>Live Stats</h3>
+  <ul>
+    <li>Documents: {{ stats.documents }}</li>
+    <li>Chunks: {{ stats.chunks }}</li>
+    <li>Conversations: {{ stats.conversations }}</li>
+    <li>Messages: {{ stats.messages }}</li>
+  </ul>
+
+  <p>
+    <a href="{{ url_for('admin.upload') }}">Upload knowledge base documents</a> ·
+    <a href="{{ url_for('main.conversations') }}">Review conversations</a>
+  </p>
+
+  <h3>Recent conversations</h3>
+  {% if conversations %}
+    <ul>
+      {% for conversation in conversations[:5] %}
+        <li><a href="{{ url_for('main.conversation_detail', id=conversation.id) }}">{{ conversation.sender_phone }}</a> — {{ conversation.status }}</li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No WhatsApp threads yet.</p>
+  {% endif %}
+
+  <h3>Recent messages</h3>
+  {% if recent_messages %}
+    <ul>
+      {% for message in recent_messages %}
+        <li><strong>{{ message.direction }}:</strong> {{ message.body }}</li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No messages yet.</p>
+  {% endif %}
+
+  <h3>Quick Links</h3>
+  <ul>
+    <li><a href="{{ url_for('admin.index') }}">Admin dashboard</a></li>
+    <li><a href="{{ url_for('admin.upload') }}">Document upload</a></li>
+    <li>Twilio webhook: <code>/webhook/twilio</code></li>
+  </ul>
+{% endblock %}

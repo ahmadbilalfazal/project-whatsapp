@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% block title %}Home{% endblock %}
+{% block content %}
+  <h2>Business Dashboard</h2>
+  {% if business %}
+  <p><strong>{{ business.name }}</strong> in {{ business.city }}, {{ business.country }}. WhatsApp: {{ business.whatsapp_number }}</p>
+  {% endif %}
+  <p>This system answers customer questions from uploaded business documents and returns grounded WhatsApp replies with citations.</p>
+
+  <div class="stats-grid">
+    <div class="card">
+      <h4>Documents</h4>
+      <div class="value">{{ stats.documents }}</div>
+    </div>
+    <div class="card">
+      <h4>Chunks</h4>
+      <div class="value">{{ stats.chunks }}</div>
+    </div>
+    <div class="card">
+      <h4>Conversations</h4>
+      <div class="value">{{ stats.conversations }}</div>
+    </div>
+    <div class="card">
+      <h4>Messages</h4>
+      <div class="value">{{ stats.messages }}</div>
+    </div>
+  </div>
+
+  <p>
+    <a class="btn-primary" href="{{ url_for('admin.upload') }}">Upload knowledge base</a>
+    <a style="margin-left:0.6rem;" href="{{ url_for('main.conversations') }}">Review conversations</a>
+  </p>
+
+  <div class="card test-box">
+    <h3>Test AI Reply</h3>
+    <p>Ask a question and the app will answer from this business's documents.</p>
+    <form method="post" class="test-form">
+      {{ test_form.hidden_tag() }}
+      <div class="form-row">
+        {{ test_form.question.label }}<br>
+        {{ test_form.question(placeholder='e.g. Do you offer cash on delivery?') }}
+      </div>
+      <div class="form-row">
+        {{ test_form.submit(class_='btn-primary') }}
+      </div>
+    </form>
+    {% if question_result %}
+      <div class="test-result">
+        <div class="meta">AI reply</div>
+        <div class="body">{{ question_result.answer }}</div>
+        {% if question_result.citations %}
+          <div class="citations">
+            {% for citation in question_result.citations %}
+              <small>{{ citation.file }}{% if citation.page %} page {{ citation.page }}{% endif %}</small>{% if not loop.last %}, {% endif %}
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+    {% endif %}
+  </div>
+
+  <h3>Recent conversations</h3>
+  {% if conversations %}
+    <ul class="conversation-list">
+      {% for conversation in conversations[:5] %}
+        <li class="conversation-item"><a href="{{ url_for('main.conversation_detail', id=conversation.id) }}">{{ conversation.sender_phone }}</a><span>{{ conversation.status }}</span></li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No WhatsApp threads yet.</p>
+  {% endif %}
+
+  <h3>Recent messages</h3>
+  {% if recent_messages %}
+    <div class="messages">
+      {% for message in recent_messages %}
+        <div class="msg {{ 'inbound' if message.direction=='inbound' else 'outbound' }}">
+          <div class="meta">{{ message.direction }} — {{ message.created_at.strftime('%Y-%m-%d %H:%M') if message.created_at else '' }}</div>
+          <div class="body">{{ message.body }}</div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p>No messages yet.</p>
+  {% endif %}
+{% endblock %}

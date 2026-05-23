@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block title %}Register{% endblock %}
+{% block content %}
+  <h2>Create your business workspace</h2>
+  <form method="post">
+    {{ form.hidden_tag() }}
+    <p>{{ form.username.label }}<br>{{ form.username() }}</p>
+    <p>{{ form.email.label }}<br>{{ form.email() }}</p>
+    <p>{{ form.password.label }}<br>{{ form.password() }}</p>
+    <p>{{ form.password2.label }}<br>{{ form.password2() }}</p>
+    <p>{{ form.submit() }}</p>
+  </form>
+{% endblock %}

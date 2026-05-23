@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}WhatsApp Business Agent{% endblock %}</title>
+    <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
+  </head>
+  <body>
+    <header>
+      <h1>AI-Powered WhatsApp Business Agent</h1>
+      <nav>
+        <a href="{{ url_for('main.index') }}">Home</a>
+        <a href="{{ url_for('main.conversations') }}">Conversations</a>
+        <a href="{{ url_for('admin.index') }}">Admin Dashboard</a>
+        <a href="{{ url_for('admin.upload') }}">Upload Docs</a>
+        {% if current_user.is_authenticated %}
+        <a href="#">Logged in: {{ current_user.username }}</a>
+        <a href="{{ url_for('auth.logout') }}">Logout</a>
+        {% else %}
+        <a href="{{ url_for('auth.login') }}">Login</a>
+        <a href="{{ url_for('auth.register') }}">Register</a>
+        {% endif %}
+      </nav>
+    </header>
+    <main>
+      {% with messages = get_flashed_messages() %}
+        {% if messages %}
+          <ul>
+            {% for m in messages %}
+              <li>{{ m }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      {% endwith %}
+      {% block content %}{% endblock %}
+    </main>
+    <footer>
+      <p>WhatsApp RAG agent for document-grounded responses.</p>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block title %}Conversations{% endblock %}
+{% block content %}
+  <h2>WhatsApp Conversations</h2>
+  {% if conversations %}
+    <ul class="conversation-list">
+      {% for conversation in conversations %}
+        <li class="conversation-item">
+          <a href="{{ url_for('main.conversation_detail', id=conversation.id) }}">{{ conversation.sender_phone }}</a>
+          <span>{{ conversation.status }}</span>
+          {% if conversation.last_message_at %}
+            <small>{{ conversation.last_message_at.strftime('%Y-%m-%d %H:%M') }}</small>
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No conversations have been logged yet.</p>
+  {% endif %}
+{% endblock %}

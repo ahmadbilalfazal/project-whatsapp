@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block title %}Admin Dashboard{% endblock %}
+{% block content %}
+  <h2>Admin Dashboard</h2>
+  <p>Manage the knowledge base that powers WhatsApp replies.</p>
+  <ul>
+    <li>Documents: {{ stats.documents }}</li>
+    <li>Chunks: {{ stats.chunks }}</li>
+    <li>Conversations: {{ stats.conversations }}</li>
+    <li>Messages: {{ stats.messages }}</li>
+  </ul>
+
+  <p><a href="{{ url_for('admin.upload') }}">Upload document</a></p>
+
+  <h3>Latest documents</h3>
+  {% if recent_documents %}
+    <ul>
+      {% for document in recent_documents %}
+        <li>{{ document.filename }} — {{ document.uploaded_at.strftime('%Y-%m-%d %H:%M') }}</li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No documents uploaded yet.</p>
+  {% endif %}
+
+  <h3>Latest conversations</h3>
+  {% if recent_conversations %}
+    <ul>
+      {% for conversation in recent_conversations %}
+        <li><a href="{{ url_for('main.conversation_detail', id=conversation.id) }}">{{ conversation.sender_phone }}</a> — {{ conversation.status }}</li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No WhatsApp conversations yet.</p>
+  {% endif %}
+{% endblock %}

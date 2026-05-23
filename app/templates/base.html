@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}WhatsApp Business Agent{% endblock %}</title>
+    <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/custom.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='images/logo-small.svg') }}" type="image/svg+xml">
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container header-stack">
+        <div class="brand centered">
+          <h1><img class="logo" src="{{ url_for('static', filename='images/logo.svg') }}" alt="logo"> AI-Powered WhatsApp Business Agent</h1>
+          <p class="tagline">Document-grounded replies for customers</p>
+        </div>
+        <div class="nav-row">
+          <nav class="main-nav">
+            <a href="{{ url_for('main.index') }}"><img class="icon" src="{{ url_for('static', filename='images/icons/home.svg') }}" alt=""> Home</a>
+            <a href="{{ url_for('main.conversations') }}"><img class="icon" src="{{ url_for('static', filename='images/icons/conversations.svg') }}" alt=""> Conversations</a>
+            <a href="{{ url_for('admin.index') }}"><img class="icon" src="{{ url_for('static', filename='images/icons/admin.svg') }}" alt=""> Admin</a>
+            <a class="cta" href="{{ url_for('admin.upload') }}"><img class="icon" src="{{ url_for('static', filename='images/icons/upload.svg') }}" alt=""> Upload Docs</a>
+          </nav>
+          <div class="user">
+            {% if current_user.is_authenticated %}
+              <span class="username">{{ current_user.username }}</span>
+              <a class="btn-logout" href="{{ url_for('auth.logout') }}">Logout</a>
+            {% else %}
+              <a class="btn" href="{{ url_for('auth.login') }}">Login</a>
+              <a class="btn muted" href="{{ url_for('auth.register') }}">Register</a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </header>
+    <main class="main-content">
+      <div class="container">
+      {% with messages = get_flashed_messages() %}
+        {% if messages %}
+          <div class="flash-messages">
+            {% for m in messages %}
+              <div class="flash">{{ m }}</div>
+            {% endfor %}
+          </div>
+        {% endif %}
+      {% endwith %}
+      {% block content %}{% endblock %}
+      </div>
+    </main>
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <p>© {{ config.get('BUSINESS_NAME', 'WhatsApp Business Agent') }} — Document-grounded WhatsApp replies</p>
+        <p><a href="https://github.com/">Source</a></p>
+      </div>
+    </footer>
+    <script src="{{ url_for('static', filename='js/upload.js') }}"></script>
+  </body>
+</html>

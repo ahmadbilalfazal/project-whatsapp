@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}Conversation{% endblock %}
+{% block content %}
+  <h2>Conversation: {{ conversation.sender_phone }}</h2>
+  <p>Status: {{ conversation.status }}</p>
+  <p>Last message: {{ conversation.last_message_at.strftime('%Y-%m-%d %H:%M') if conversation.last_message_at else 'n/a' }}</p>
+
+  {% if messages %}
+    <ul>
+      {% for message in messages %}
+        <li><strong>{{ message.direction }}:</strong> {{ message.body }}</li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No messages yet.</p>
+  {% endif %}
+{% endblock %}

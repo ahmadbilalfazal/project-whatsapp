@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block title %}Admin Dashboard{% endblock %}
+{% block content %}
+  <h2>Admin Dashboard</h2>
+  {% if business %}
+  <p><strong>{{ business.name }}</strong> knowledge base for {{ business.city }}, {{ business.country }}.</p>
+  {% endif %}
+  <p>Manage the knowledge base that powers WhatsApp replies.</p>
+  <div class="stats-grid">
+    <div class="card"><h4>Documents</h4><div class="value">{{ stats.documents }}</div></div>
+    <div class="card"><h4>Chunks</h4><div class="value">{{ stats.chunks }}</div></div>
+    <div class="card"><h4>Conversations</h4><div class="value">{{ stats.conversations }}</div></div>
+    <div class="card"><h4>Messages</h4><div class="value">{{ stats.messages }}</div></div>
+  </div>
+
+  <p><a class="btn-primary" href="{{ url_for('admin.upload') }}">Upload document</a></p>
+
+  <h3>Latest documents</h3>
+  {% if recent_documents %}
+    <ul class="conversation-list">
+      {% for document in recent_documents %}
+        <li class="conversation-item">{{ document.filename }} <span>{{ document.uploaded_at.strftime('%Y-%m-%d %H:%M') }}</span></li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No documents uploaded yet.</p>
+  {% endif %}
+
+  <h3>Latest conversations</h3>
+  {% if recent_conversations %}
+    <ul class="conversation-list">
+      {% for conversation in recent_conversations %}
+        <li class="conversation-item"><a href="{{ url_for('main.conversation_detail', id=conversation.id) }}">{{ conversation.sender_phone }}</a> <span>{{ conversation.status }}</span></li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No WhatsApp conversations yet.</p>
+  {% endif %}
+{% endblock %}

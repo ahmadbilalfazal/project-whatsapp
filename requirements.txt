@@ -1,0 +1,14 @@
+Flask==2.3.3
+Flask-Login==0.6.2
+Flask-WTF==1.1.1
+Flask-SQLAlchemy==3.0.3
+pytest==7.4.2
+Werkzeug==2.3.8
+gunicorn==21.2.0
+sentence-transformers==2.2.2
+huggingface-hub==0.16.4
+faiss-cpu==1.13.2
+transformers==4.35.2
+PyPDF2==3.0.1
+python-docx==0.8.11
+twilio==8.4.0
