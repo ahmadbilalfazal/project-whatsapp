@@ -2,14 +2,32 @@ import os
 import io
 import PyPDF2
 import docx
-from app.vector_store import VectorStore
 from app import db
-from app.models import Document
+from app.models import Document, Chunk
 
 CHUNK_SIZE = 500
 CHUNK_OVERLAP = 100
 
-vs = VectorStore()
+
+def _persist_chunks(texts, metadatas):
+    for metadata, text in zip(metadatas, texts):
+        chunk = Chunk(
+            business_id=metadata.get('business_id'),
+            doc_id=metadata.get('doc_id'),
+            page=metadata.get('page'),
+            text=text,
+            vector_id=None,
+        )
+        db.session.add(chunk)
+    db.session.commit()
+
+
+def _get_vector_store():
+    try:
+        from app.vector_store import VectorStore
+        return VectorStore()
+    except Exception:
+        return None
 
 
 def _read_docx(file_stream):
@@ -77,5 +95,9 @@ def ingest_file(stream, filename, business_id):
             metadatas.append({'doc_id': doc.id, 'business_id': business_id, 'page': i, 'text': chunk})
 
     if texts:
-        vs.add(texts, metadatas)
+        vector_store = _get_vector_store()
+        if vector_store is not None:
+            vector_store.add(texts, metadatas)
+        else:
+            _persist_chunks(texts, metadatas)
     return {'doc_id': doc.id, 'chunks': len(texts)}
