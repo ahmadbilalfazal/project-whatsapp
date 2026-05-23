@@ -1,6 +1,5 @@
 import os
 import re
-from app.vector_store import VectorStore
 from app.models import Business, Chunk
 
 # choose model from env or default
@@ -343,8 +342,20 @@ def _merge_results(*result_groups, top_k=3):
 def answer_question(question, top_k=3, similarity_threshold=0.0, business_id=None):
     if generator is None:
         _init_generator()
-    store = VectorStore()
-    results = store.search(question, top_k=top_k, business_id=business_id)
+    # Lazy-load the VectorStore to avoid importing faiss on platforms
+    # where it isn't installed. If RAG_MODEL is set to 'mock' we skip
+    # the vector store entirely and fall back to lexical search.
+    results = []
+    rag_model = os.environ.get('RAG_MODEL') or ''
+    if rag_model.lower() != 'mock':
+        try:
+            from app.vector_store import VectorStore
+            store = VectorStore()
+            results = store.search(question, top_k=top_k, business_id=business_id)
+        except Exception:
+            # If faiss / vector store fails to import or initialize,
+            # continue and use lexical fallback below.
+            results = []
     business_ranked = _rank_business_chunks(question, business_id, top_k=top_k * 2) if business_id is not None else []
     if not results:
         results = _lexical_chunk_fallback(question, top_k=top_k, business_id=business_id)
